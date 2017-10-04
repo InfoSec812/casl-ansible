@@ -30,7 +30,7 @@
   when:
   - entry.object not in [ 'namespace', 'policy' ]
 
-- name: "Create OpenShift objects with params"
+- name: "Create OpenShift objects with params (non-idempotent)"
   include: process-content.yml
   with_items:
   - "{{ openshift_cluster_content }}"
@@ -39,3 +39,13 @@
   when:
   - entry.object not in [ 'namespace', 'policy' ]
   - entry.content is defined 
+
+- name: "Create OpenShift objects with params (idempotent)"
+  include: process-idempotent.yml
+  with_items:
+  - "{{ openshift_cluster_content }}"
+  loop_control:
+    loop_var: entry
+  when:
+  - entry.object not in [ 'namespace', 'policy' ]
+  - entry.content is defined

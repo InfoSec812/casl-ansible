@@ -6,6 +6,7 @@
   with_items:
   - "{{ entry.content }}"
   when:
+  - item.idempotent is undefined
   - item.template is defined 
   - item.template != ''
   - item.params is defined
