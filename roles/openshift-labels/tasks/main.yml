@@ -2,7 +2,8 @@
 
 - name: "Set defaults"
   set_fact:
-    target_namespace: "{{ target_namespace | default('') }}"
+    target_namespace: "-n {{ target_namespace }}"
+  when: (target_namespace | length) > 0
 
 - name: "Apply label {{ label }} to object {{ target_object }}"
   command: >
