@@ -1,0 +1,18 @@
+---
+- name: Label SonarDB
+  hosts: local
+  tasks:
+  - include_role: 
+      name: roles/openshift-labels
+    vars:
+      label: "app=sonarqube"
+      target_object: deploymentconfig
+      target_name: sonardb
+  - include_role: 
+      name: roles/openshift-labels
+    vars:
+      target_namespace: deven-ci-cd
+      label: "app=sonarqube"
+      target_object: deploymentconfig
+      target_name: sonardb
+

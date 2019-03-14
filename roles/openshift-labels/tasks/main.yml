@@ -2,12 +2,20 @@
 
 - name: "Set defaults"
   set_fact:
-    target_namespace: "-n {{ target_namespace }}"
-  when: (target_namespace | length) > 0
+    processed_namespace: "{{ target_namespace | default('') }}"
+
+- name: Empty namespace param when not needed
+  set_fact:
+    namespace_param: ""
+
+- name: Set namespace param when needed
+  set_fact:
+    namespace_param: "-n {{ processed_namespace }}"
+  when: (processed_namespace | length) > 0
 
 - name: "Apply label {{ label }} to object {{ target_object }}"
   command: >
-    oc label --overwrite {{ target_object }} {{ target_name }} {{ label }} {{ target_namespace }}
+    oc label --overwrite {{ target_object }} {{ target_name }} {{ label }} {{ namespace_param }}
   when:
   - target_object is defined
   - target_object|trim != ''
